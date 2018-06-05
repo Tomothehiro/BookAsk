@@ -1,0 +1,28 @@
+<h1>Book Ask</h1>
+
+{% if book %}
+    <img src="{{ book.cover }}" alt="{{ book.title }}" height="200" width="150">
+    <h2>{{ book.title }} </h2> - {{ book.author }}
+    <h3>Questions:</h3> <hr>
+    {% for question in book.question_set.all %}
+        {{ question }} {{ question.like }}<br>
+        {% for answer in question.answer_set.all %}
+            {{ answer }}<br>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+    Ask new question: <br>
+    <form action="{% url 'book:ask' book.id %}" method="post">
+        {% csrf_token %}
+        Page <input type="text" id="page">
+        <textarea rows="4" cols="50" id="question"></textarea>
+        <input type="submit" value="Ask">
+    </form>
+{% else %}
+    <h3>There was an error loading this book</h3>
+{% endif %}
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
