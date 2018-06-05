@@ -17,13 +17,11 @@ def book(request, book_id):
     
 def ask(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    print(request.POST)
-    print(request.POST.get('question'))
     new_question = Question()
     # change with user id
     new_question.author = "Tomohiro Sato"
-    new_question.question = request.POST.get("question")
-    # new_question.page = int(request.POST.get("page"))
+    new_question.question = request.POST.get('question')
+    new_question.page = int(request.POST.get('page'))
     new_question.like = 0
     new_question.book = book
     try:

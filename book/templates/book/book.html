@@ -14,8 +14,8 @@
     Ask new question: <br>
     <form action="{% url 'book:ask' book.id %}" method="post">
         {% csrf_token %}
-        Page <input type="text" id="page">
-        <textarea rows="4" cols="50" id="question"></textarea>
+        Page <input type="text" id="page" name="page">
+        <textarea rows="4" cols="50" id="question" name="question"></textarea>
         <input type="submit" value="Ask">
     </form>
 {% else %}
