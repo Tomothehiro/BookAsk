@@ -5,11 +5,11 @@ app_name = 'book'
 
 urlpatterns = [
     # /book/
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
 
     # /book/71/
-    url(r'^(?P<book_id>[0-9a-zA-Z]+)/$', views.book, name='book'),
+    url(r'^(?P<pk>[0-9a-zA-Z]+)/$', views.BookView.as_view(), name='book'),
 
-    # /book/ask/
-    url(r'^(?P<book_id>[0-9a-zA-Z]+)/ask/$', views.ask, name='ask'),
+    # /book/71/q/
+    url(r'^(?P<pk>[0-9a-zA-Z]+)/q/$', views.AskQuestion.as_view(), name='q'),
 ]

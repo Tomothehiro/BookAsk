@@ -1,27 +1,40 @@
 {% extends 'book/base.html' %}
-{% block title %}BookQ - {{book.title}}<{% endblock %}
+{% block title %}BookQ - {{book.title}}{% endblock %}
 
 {% block body %}
-    <h1>Book Ask</h1>
-
+<div class="container-fluid">
+    <div class="row">
     {% if book %}
-        <img src="{{ book.cover }}" alt="{{ book.title }}" height="200" width="150">
-        <h2>{{ book.title }} </h2> - {{ book.author }}
-        <h3>Questions:</h3> <hr>
-        {% for question in book.question_set.all %}
-            {{ question }} {{ question.like }}<br>
-            {% for answer in question.answer_set.all %}
-                {{ answer }}<br>
-            {% endfor %}
-            <hr>
-        {% endfor %}
-        Ask new question: <br>
-        <form action="{% url 'book:ask' book.id %}" method="post">
-            {% csrf_token %}
-            Page <input type="text" id="page" name="page">
-            <textarea rows="4" cols="50" id="question" name="question"></textarea>
-            <input type="submit" value="Ask">
-        </form>
+        <div class="col-sm-12 col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <img src="{{ book.cover }}" alt="{{ book.title }}" height="200" width="150">
+                    <h2>{{ book.title }} </h2> - {{ book.author }}
+                
+                    <h3>Questions:</h3> <hr>
+                    Ask new question: <br>
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- {% include 'book/form-template.html' %} -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+                                Page <input type="number" class="form-control" id="page" name="page">
+                                <textarea class="form-control" rows="4" id="question" name="question"></textarea>
+                                <button type="submit" class="btn btn-success">Ask</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% for question in book.question_set.all %}
+                        {{ question }} <br>Like: {{ question.like }}<br>
+                        Answers:<br>
+                        {% for answer in question.answer_set.all %}
+                            {{ answer }}<br>
+                        {% endfor %}
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% else %}
         <h3>There was an error loading this book</h3>
     {% endif %}
@@ -29,4 +42,6 @@
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
+    </div>
+</div>
 {% endblock %}
