@@ -13,7 +13,7 @@
                 
                     <h3>Questions:</h3> <hr>
                     Ask new question: <br>
-                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="{% url 'book:q' book.id %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <!-- {% include 'book/form-template.html' %} -->
                         <div class="form-group">

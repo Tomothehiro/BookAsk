@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9a-zA-Z]+)/$', views.BookView.as_view(), name='book'),
 
     # /book/71/q/
-    url(r'^(?P<pk>[0-9a-zA-Z]+)/q/$', views.AskQuestion.as_view(), name='q'),
+    url(r'^(?P<book_id>[0-9a-zA-Z]+)/q/$', views.ask, name='q'),
 ]
