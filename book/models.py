@@ -5,7 +5,7 @@ class Book(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     category = models.CharField(max_length=100)
-    cover = models.CharField(max_length=1000)
+    cover = models.FileField()
 
     def get_absolute_url(self):
         return reverse('book:book', kwargs={'pk': self.pk})
