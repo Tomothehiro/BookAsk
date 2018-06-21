@@ -15,7 +15,6 @@
                     Ask new question: <br>
                     <form class="form-horizontal" action="{% url 'book:q' book.id %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <!-- {% include 'book/form-template.html' %} -->
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
                                 Page <input type="number" class="form-control" id="page" name="page">
