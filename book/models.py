@@ -10,8 +10,11 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book:book', kwargs={'pk': self.pk})
 
-    def __str__(self):
+    def __unicode__(self):
         return self.title + ' - ' + self.author
+
+    def __unicode__(self):
+        return unicode(self.cover, 'utf-8')
 
 class Question(models.Model):
     author = models.CharField(max_length=250)
@@ -24,7 +27,7 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('book:book', kwargs={'pk': self.pk})
 
-    def __str__(self):
+    def __unicode__(self):
         return self.author + ' - ' + str(self.page) + ' - ' + self.question
 
 class Answer(models.Model):
@@ -33,7 +36,7 @@ class Answer(models.Model):
     like = models.PositiveIntegerField()
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.author + ' - ' + str(self.question) + ' - ' + self.answer
 
 class Comment(models.Model):

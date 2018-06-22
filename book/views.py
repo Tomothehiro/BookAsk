@@ -19,27 +19,32 @@ class BookView(generic.DetailView):
     fields = ['question', 'page']
     template_name = 'book/book.html'
 
-class AskQuestion(CreateView):
-    model = Question
+    def get_object(self, pk):
+        try:
+            return Book.objects.get(pk=pk)
+        except Book.DoesNotExist:
+            raise Http404
 
-class DetailViewMixin(object):
-    details_model = None
-    context_detail_object_name = None
+    def get(self, request, pk):
+        book = self.get_object(pk)
+        print(self.model.cover)
+        return render(request, self.template_name, {'book': book})
 
-    def get_context_data(self, **kwargs):
-        context = super(DetailViewMixin, self).get_context_data(**kwargs)
-        context[self.context_detail_object_name] = self.get_detail_object()
-        return context
-
-    def get_detail_object(self):
-        return self.details_model._default_manager.get(pk=self.kwargs['pk'])
-    
-class CommentCreate(DetailViewMixin, CreateView):
-    details_model = Book
-    context_detail_object_name = 'post'
-    model = Question
-    template_name = "book/book.html"
-    fields = ['question', 'page']
+    def post(self, request, pk):
+        book = self.get_object(pk)
+        new_question = Question()
+        # change with user id
+        new_question.author = "Tomohiro Sato"
+        new_question.question = request.POST.get('question').encode('utf-8')
+        new_question.page = int(request.POST.get('page'))
+        new_question.like = 0
+        new_question.book = book
+        try:
+            new_question.save()
+        except (KeyError, Question.DoesNotExist):
+            return render(request, self.template_name, {'book': book, 'error_message': "Failed to save question"})
+        else:
+            return render(request, self.template_name, {'book': book})
 
 class UserFormView(View):
     form_class = UserForm
@@ -75,6 +80,8 @@ class UserFormView(View):
 
         return render(request, self.template_name, {'form': form})
 
+
+
 from django.shortcuts import render, get_object_or_404
 # from .models import Book, Question, Answer, Comment
 
@@ -91,19 +98,3 @@ from django.shortcuts import render, get_object_or_404
 #     #     raise Http404("Book does not exist")
 #     book = get_object_or_404(Book, pk=book_id)
 #     return render(request, 'book/book.html', {'book': book})
-    
-def ask(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    new_question = Question()
-    # change with user id
-    new_question.author = "Tomohiro Sato"
-    new_question.question = request.POST.get('question')
-    new_question.page = int(request.POST.get('page'))
-    new_question.like = 0
-    new_question.book = book
-    try:
-        new_question.save()
-    except (KeyError, Question.DoesNotExist):
-        return render(request, 'book/book.html', {'book': book, 'error_message': "Failed to save question"})
-    else:
-        return render(request, 'book/book.html', {'book': book})
