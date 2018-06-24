@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# coding=utf-8
+from settings_secret import *
 
 """
 Django settings for bookask project.
@@ -21,9 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '35d^n^6ddcu2-frq8b#^(-rqy^2_6-&!h0bb@^0q5vrfdqv-vk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -120,14 +116,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# SMTP server
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tomothehiro@gmail.com'
-EMAIL_HOST_PASSWORD = 'special2'
-DEFAULT_FROM_EMAIL = 'Tomohiro Sato <tomothehiro@gmail.com>'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
