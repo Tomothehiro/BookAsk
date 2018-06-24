@@ -104,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Redirect to home URL after login/logout
+LOGIN_REDIRECT_URL = '/book'
+LOGOUT_REDIRECT_URL = '/book'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -118,6 +121,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+# SMTP server
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tomothehiro@gmail.com'
+EMAIL_HOST_PASSWORD = 'special2'
+DEFAULT_FROM_EMAIL = 'Tomohiro Sato <tomothehiro@gmail.com>'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

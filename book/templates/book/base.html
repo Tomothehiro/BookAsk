@@ -45,11 +45,21 @@
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="">
-                        <a href="#">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Loggout
-                        </a>
-                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        <li><a href="">Hi {{ user.get_username }}</a></li>
+                        <li class="">
+                            <a href="{% url 'logout' %}?next={{request.path}}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Loggout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="">
+                            <a href="{% url 'login' %}?next={{request.path}}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Login
+                            </a>
+                        </li>
+                    {% endif %} 
                 </ul>
 
             </div>
