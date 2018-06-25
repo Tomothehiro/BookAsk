@@ -3,7 +3,10 @@
 
 {% block body %}
 
-{% if form.errors %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'book/login.css' %}" />
+
+<!-- {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
@@ -14,27 +17,123 @@
     {% else %}
     <p>Please login to see this page.</p>
     {% endif %}
+{% endif %} -->
+
+<div class="container" style="margin-top: 10%;">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-login">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-6">
+              <a href="#" class="active" id="login-form-link">Login</a>
+            </div>
+            <div class="col-xs-6">
+              <a href="#" id="register-form-link">Register</a>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <form id="login-form" action="{% url 'login' %}" method="post" role="form" style="display: block;">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" name="{{ form.username.html_name }}" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                </div>
+                <div class="form-group">
+                  <input type="password" name="{{ form.password.html_name }}" id="password" tabindex="2" class="form-control" placeholder="Password" value="">
+                </div>
+                <div class="form-group text-center">
+                  <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                  <label for="remember"> Remember Me</label>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                      <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="text-center">
+                        <a href="{% url 'password_reset' %}" tabindex="5" class="forgot-password">Forgot Password?</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <form id="register-form" action="{% url 'book:register' %}" method="post" role="form" style="display: none;">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="text" name="username" id="username-reg" tabindex="1" class="form-control" placeholder="Username" value="">
+                  <p id="username-message" class="text-danger" style="display: none;">username message</p>
+                </div>
+                <div class="form-group">
+                  <input type="email" name="email" id="email-reg" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                  <p id="email-message" class="text-danger" style="display: none;">email message</p>
+                </div>
+                <div class="form-group">
+                  <input type="password" name="password" id="password-reg" tabindex="2" class="form-control" placeholder="Password">
+                  <p id="password-message" class="text-danger" style="display: none;">password message</p>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+
+  $('#login-form-link').click(function(e) {
+    $("#login-form").delay(100).fadeIn(100);
+    $("#register-form").fadeOut(100);
+    $('#register-form-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
+  $('#register-form-link').click(function(e) {
+    $("#register-form").delay(100).fadeIn(100);
+    $("#login-form").fadeOut(100);
+    $('#login-form-link').removeClass('active');
+    $(this).addClass('active');
+    e.preventDefault();
+  });
+
+  // if url contains #register (/accounts/login/#register), open Register tab
+  var hash = window.location.hash;
+  if(hash == '#register')
+  $(hash+'-form-link').click();
+});
+</script>
+
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      if ("{{ message.tags }}" == "warning") {
+        $('#username-message').html("{{ message }}").show();
+      } else if ("{{ message.tags }}" == "error") {
+        $('#password-message').html("{{ message }}").show();
+      } else if ("{{ message.tags }}" == "info") {
+        $('#email-message').html("{{ message }}").show();
+      }
+    </script>
+  {% endfor %}
 {% endif %}
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-
-<div>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</div>
-<div>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</div>
-
-<div>
-  <input type="submit" value="login" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</div>
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
 {% endblock %}

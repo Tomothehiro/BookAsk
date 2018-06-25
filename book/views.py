@@ -6,6 +6,9 @@ from django.views import generic
 from django.views.generic import View
 from .models import Book, Question, Answer, Comment
 from .forms import UserForm
+from django.contrib import messages
+import json
+from collections import namedtuple
 
 class IndexView(generic.ListView):
     template_name = 'book/index.html'
@@ -48,12 +51,13 @@ class BookView(generic.DetailView):
 
 class UserFormView(View):
     form_class = UserForm
-    template_name = 'book/registration_form.html'
+    template_name = 'registration/login.html'
 
     # display blank form for GET request
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        return redirect('/accounts/login/#register')
+        # return render(request, self.template_name, {'form': form})
 
     # register the user for POST request
     def post(self, request):
@@ -77,8 +81,18 @@ class UserFormView(View):
                 if user.is_active:
                     login(request, user)
                     return redirect('book:index')
-
-        return render(request, self.template_name, {'form': form})
+        
+        x = json.loads(form.errors.as_json(), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        for attr, value in x.__dict__.iteritems():
+            for x in value:
+                if attr == 'username':
+                    messages.warning(request, x.message)
+                elif attr == 'password':
+                    messages.error(request, x.message)
+                elif attr == 'email':
+                    messages.info(request, x.message)
+        
+        return redirect('/accounts/login/#register')
 
 
 

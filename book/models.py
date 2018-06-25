@@ -10,12 +10,6 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book:book', kwargs={'pk': self.pk})
 
-    def __unicode__(self):
-        return self.title + ' - ' + self.author
-
-    def __unicode__(self):
-        return unicode(self.cover, 'utf-8')
-
 class Question(models.Model):
     author = models.CharField(max_length=250)
     question = models.CharField(max_length=4000)
