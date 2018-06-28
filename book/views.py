@@ -37,7 +37,7 @@ class BookView(generic.DetailView):
         book = self.get_object(pk)
         new_question = Question()
         # change with user id
-        new_question.author = "Tomohiro Sato"
+        new_question.author = request.user.id
         new_question.question = request.POST.get('question').encode('utf-8')
         new_question.page = int(request.POST.get('page'))
         new_question.like = 0
