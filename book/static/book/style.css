@@ -1,7 +1,9 @@
 body{
     margin: 0;
     padding: 0;
-    background: white url("images/texture.jpg");
+    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    background-color: rgb(240, 243, 246);
 }
 
 .navbar{
@@ -10,4 +12,26 @@ body{
 
 .navbar-brand{
     font-family: 'Satisfy', cursive;
+}
+
+.margin-bottom {
+    margin-bottom: 16px;
+}
+
+.no-margin {
+    margin: auto 0;
+}
+
+.height-20 {
+    line-height: 22px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.btn-dropdown{
+    border:0px solid transparent;
+    font-size: 17px;
+    margin: 0 0 4px 0;
 }

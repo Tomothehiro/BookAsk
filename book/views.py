@@ -2,6 +2,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic import View
 from .models import Book, Question, Answer, Comment
@@ -37,7 +38,7 @@ class BookView(generic.DetailView):
         book = self.get_object(pk)
         new_question = Question()
         # change with user id
-        new_question.author = request.user.id
+        new_question.author = request.user
         new_question.question = request.POST.get('question').encode('utf-8')
         new_question.page = int(request.POST.get('page'))
         new_question.like = 0

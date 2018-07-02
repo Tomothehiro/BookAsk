@@ -32,7 +32,7 @@ class Question(models.Model):
         return reverse('book:book', kwargs={'pk': self.pk})
 
     def __unicode__(self):
-        return self.author + ' - ' + str(self.page) + ' - ' + self.question
+        return self.question
 
 class Answer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -41,7 +41,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return self.author + ' - ' + str(self.question) + ' - ' + self.answer
+        return self.answer
 
 class Comment(models.Model):
     author = models.CharField(max_length=250)
