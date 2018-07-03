@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
@@ -9,6 +10,7 @@ class Category(models.Model):
         return self.name
 
 class Book(models.Model):
+    isbn13 = models.CharField(max_length=13, primary_key = True)
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
@@ -21,7 +23,7 @@ class Book(models.Model):
         return self.title
 
 class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
     question = models.CharField(max_length=4000)
     #date = models.
     page = models.PositiveIntegerField()
@@ -34,8 +36,12 @@ class Question(models.Model):
     def __unicode__(self):
         return self.question
 
+    def get_answer_count(self):
+        return Answer.objects.filter(answer__question=self).count()
+
+
 class Answer(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers')
     answer = models.CharField(max_length=4000)
     like = models.PositiveIntegerField()
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

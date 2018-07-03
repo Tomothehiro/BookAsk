@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic import View
+from django.http import Http404
 from .models import Book, Question, Answer, Comment
 from .forms import UserForm
 from django.contrib import messages
@@ -20,7 +21,6 @@ class IndexView(generic.ListView):
 
 class BookView(generic.DetailView):
     model = Book
-    fields = ['question', 'page']
     template_name = 'book/book.html'
 
     def get_object(self, pk):
@@ -31,7 +31,6 @@ class BookView(generic.DetailView):
 
     def get(self, request, pk):
         book = self.get_object(pk)
-        print(self.model.cover)
         return render(request, self.template_name, {'book': book})
 
     def post(self, request, pk):
@@ -49,6 +48,35 @@ class BookView(generic.DetailView):
             return render(request, self.template_name, {'book': book, 'error_message': "Failed to save question"})
         else:
             return render(request, self.template_name, {'book': book})
+
+class QuestionView(generic.DetailView):
+    model = Question
+    template_name = 'book/question.html'
+
+    def get_object(self, pk):
+        try:
+            return Question.objects.get(pk=pk)
+        except Question.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        question = self.get_object(pk)
+        return render(request, self.template_name, {'question': question})
+
+    def post(self, request, pk):
+        question = self.get_object(pk)
+        new_answer = Answer()
+        # change with user id
+        new_answer.author = request.user
+        new_answer.answer = request.POST.get('answer').encode('utf-8')
+        new_answer.like = 0
+        new_answer.question = question
+        try:
+            new_answer.save()
+        except (KeyError, Answer.DoesNotExist):
+            return render(request, self.template_name, {'question': question, 'error_message': "Failed to save answer"})
+        else:
+            return render(request, self.template_name, {'question': question})
 
 class UserFormView(View):
     form_class = UserForm
@@ -97,8 +125,7 @@ class UserFormView(View):
 
 
 
-from django.shortcuts import render, get_object_or_404
-# from .models import Book, Question, Answer, Comment
+# from .models import Category
 
 
 # def index(request):
@@ -106,10 +133,17 @@ from django.shortcuts import render, get_object_or_404
 #     context = {'all_books': all_books}
 #     return render(request, 'book/index.html', context)
 
-# def book(request, book_id):
-#     # try:
-#     #     book = Book.objects.get(pk=book_id)
-#     # except Book.DoesNotExist:
-#     #     raise Http404("Book does not exist")
-#     book = get_object_or_404(Book, pk=book_id)
+# def seed(request):
+#     category = Category()
+#     category.name = "Science"
+#     category.save()
+
+#     book = Book()
+#     book.isbn13 = "9781464183393"
+#     book.title = "Molecular Cell Biology"
+#     book.author = "Harvey Lodish"
+#     book.category = category
+#     book.cover = "9781464183393_l.jpg"
+#     book.save()
+
 #     return render(request, 'book/book.html', {'book': book})

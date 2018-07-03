@@ -28,7 +28,7 @@
                         </form>
                     </div>
                     <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1 margin-bottom">
-                        <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' book.id %}" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' book.isbn13 %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="page">Page</label>
@@ -43,7 +43,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-sm-12 margin-bottom">
+                    <div class="col-sm-12 col-md-10 margin-bottom">
                         <div>
                             <h4 class="inline-block height-20">Sort questions by:</h4>
                             <div class="inline-block">
@@ -61,12 +61,28 @@
                         </div><hr>
                         <div>
                             {% for question in book.question_set.all %}
-                                {{ question }} <br>Like: {{ question.like }}<br>
-                                Answers:<br>
-                                {% for answer in question.answer_set.all %}
-                                    {{ answer }}<br>
-                                {% endfor %}
-                                <hr>
+                                <div class="col-sm-offset-1 col-sm-8">
+                                    <a href="">{{ question.question }}</a>
+                                </div>
+                                <div class="col-sm-3">
+                                    <ul class="list-inline">
+                                        <li><div>
+                                                {{ question.get_answer_count }}
+                                            </div>
+                                            <div>
+                                                replies
+                                            </div>
+                                        </li>
+                                        <li><div>
+                                            {{ question.like }}
+                                        </div>
+                                        <div>
+                                            have this question
+                                        </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br><hr>
                             {% endfor %}
                         </div>
                     </div>
