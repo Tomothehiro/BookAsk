@@ -59,8 +59,8 @@ class QuestionView(generic.DetailView):
         except Question.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk):
-        question = self.get_object(pk)
+    def get(self, request, pk, id):
+        question = self.get_object(id)
         return render(request, self.template_name, {'question': question})
 
     def post(self, request, pk):
@@ -122,28 +122,3 @@ class UserFormView(View):
                     messages.info(request, x.message)
         
         return redirect('/accounts/login/#register')
-
-
-
-# from .models import Category
-
-
-# def index(request):
-#     all_books = Book.objects.all()
-#     context = {'all_books': all_books}
-#     return render(request, 'book/index.html', context)
-
-# def seed(request):
-#     category = Category()
-#     category.name = "Science"
-#     category.save()
-
-#     book = Book()
-#     book.isbn13 = "9781464183393"
-#     book.title = "Molecular Cell Biology"
-#     book.author = "Harvey Lodish"
-#     book.category = category
-#     book.cover = "9781464183393_l.jpg"
-#     book.save()
-
-#     return render(request, 'book/book.html', {'book': book})

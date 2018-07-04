@@ -4,20 +4,22 @@
 {% block body %}
 <div class="container-fluid">
     <div class="row">
-    {% if book %}
+    {% if question %}
         <div class="col-xs-12 col-sm-2">
-            <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-thumbnail rounded" height="200" width="150">
+            <img src="{{ question.book.cover.url }}" alt="{{ question.book.title }}" class="img-thumbnail rounded" height="200" width="150">
             <div class="inline-block">
-                <h4>{{ book.title }} </h4>
+                <h4>{{ question.book.title }} </h4>
                 <span>
-                    - {{ book.author }}
+                    - {{ question.book.author }}
                 </span><br><br>
-                <button id="newQ" class="btn btn-primary">New Question</button>
             </div>
         </div>
         <div class="col-xs-12 col-sm-10">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <div class="col-sm-12 margin-bottom">
+
+                    </div>
                     <div class="col-sm-12 margin-bottom">
                         <form class="form-horizontal" id="searchQ-form" action="" method="post" enctype="multipart/form-data">
                             <h4>Search Questions</h4>
@@ -33,8 +35,7 @@
                         </form>
                     </div>
                     <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1 margin-bottom">
-                        <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' book.isbn13 %}" method="post" enctype="multipart/form-data">
-                            <hr>
+                        <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' question.book.isbn13 %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="page">Page</label>
@@ -47,10 +48,9 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Ask</button>
                             </div>
-                            <hr>
                         </form>
                     </div>
-                    <div class="col-sm-12 col-md-12 margin-bottom">
+                    <div class="col-sm-12 col-md-10 margin-bottom">
                         <div>
                             <h4 class="inline-block height-20">Sort questions by:</h4>
                             <div class="inline-block">
@@ -67,42 +67,38 @@
                             
                         </div><hr>
                         <div>
-                            {% for question in book.question_set.all %}
-                            <div>
                                 <div class="col-sm-9">
-                                    <a href="{% url 'book:question' book.isbn13 question.id %}">
-                                        <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
-                                        <span class="question-text">{{ question.question }}</span>
+                                    <a href="{% url 'book:question' question.book.isbn13 question.id %}">
+                                        <span>{{ question.page }}</span>
+                                        <span>{{ question.question }}</span>
                                     </a>
                                 </div>
                                 <div class="col-sm-3">
-                                    <ul class="list-inline question-stat-list">
-                                        <li><div class="question-stat">
+                                    <ul class="list-inline">
+                                        <li><div>
                                                 {{ question.num_answer }}
                                             </div>
-                                            <div class="question-stat-label">
+                                            <div>
                                                 replies
                                             </div>
                                         </li>
-                                        <li><div class="question-stat">
+                                        <li><div>
                                             {{ question.like }}
                                         </div>
-                                        <div class="question-stat-label">
+                                        <div>
                                             have this question
                                         </div>
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div class="col-xs-12"><hr></div>
-                            {% endfor %}
+                                <br><hr>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     {% else %}
-        <h3>There was an error loading this book</h3>
+        <h3>There was an error loading this question</h3>
     {% endif %}
 
     {% if error_message %}
@@ -110,12 +106,4 @@
     {% endif %}
     </div>
 </div>
-
-<script>
-    $(function() {
-        $('#newQ').click(function() {
-            $("#newQ-form").removeClass("hide");
-        });
-    });
-</script>
 {% endblock %}

@@ -36,8 +36,10 @@ class Question(models.Model):
     def __unicode__(self):
         return self.question
 
-    def get_answer_count(self):
-        return Answer.objects.filter(answer__question=self).count()
+    # allows question.num_answer without ()
+    @property
+    def num_answer(self):
+        return self.answer_set.count()
 
 
 class Answer(models.Model):
