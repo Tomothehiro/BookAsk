@@ -7,14 +7,6 @@ body{
     background-color: rgb(240, 243, 246);
 }
 
-.navbar{
-    border-radius: 0;
-}
-
-.navbar-brand{
-    font-family: 'Satisfy', cursive;
-}
-
 a {
     color: rgba(0,0,0,1);
 }
@@ -22,6 +14,18 @@ a {
 a:hover {
     text-decoration: none;
 }
+
+/* bootstrap override */
+
+.btn {
+    border-radius: 2px;
+}
+
+input {
+    border-radius: 2px !important;
+}
+
+/* common use */
 
 .margin-bottom {
     margin-bottom: 16px;
@@ -35,7 +39,17 @@ a:hover {
     margin: 5px 0;
 }
 
-/* book.html and question.html */
+/* base.html */
+
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-brand{
+    font-family: 'Satisfy', cursive;
+}
+
+/* book.html */
 
 .height-20 {
     line-height: 22px;
@@ -79,4 +93,31 @@ a:hover {
     margin: 0;
     text-align: center;
     width: 80px;
+}
+
+/* question.html */
+.answer-replies:before {
+    display: block;
+    content: "";
+    position: absolute;
+    right: -30px;
+    left: -30px;
+    top: 0;
+    height: 0px;
+    border-top: 1px solid #D0D3D6
+}
+
+.answer-replies {
+    color: rgba(0,0,0,0.85);
+    font-weight: 400;
+    font-size: 2.6rem;
+    margin-top: 20px;
+}
+
+.answer-user {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 700;
+    font-size: 17px;
+    font-size: 1.7rem;
+    margin: 15px 0 15px 0;
 }

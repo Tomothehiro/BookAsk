@@ -18,80 +18,36 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-sm-12 margin-bottom">
-
-                    </div>
-                    <div class="col-sm-12 margin-bottom">
-                        <form class="form-horizontal" id="searchQ-form" action="" method="post" enctype="multipart/form-data">
-                            <h4>Search Questions</h4>
-                            <div class="form-row">
-                                <div class="col-sm-9">
-                                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="page number or question" value="">
-                                </div>
-                                <div class="col-sm-2">
-                                    <button id="newQ" class="btn btn-primary">Search</button>
-                                </div>
-                            </div>
-                            
-                        </form>
-                    </div>
-                    <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1 margin-bottom">
-                        <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' question.book.isbn13 %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="page">Page</label>
-                                <input type="number" class="form-control" id="page" name="page">
-                            </div>
-                            <div class="form-group">
-                                <label for="question">Question</label>
-                                <textarea class="form-control" rows="4" id="question" name="question"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success">Ask</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-sm-12 col-md-10 margin-bottom">
                         <div>
-                            <h4 class="inline-block height-20">Sort questions by:</h4>
-                            <div class="inline-block">
-                            <div class="btn-group">
-                                <button type="button" class="dropdown-toggle btn-dropdown" data-toggle="dropdown">
-                                    Most Active <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Newest</a></li>
-                                    <li><a href="#">Most Active</a></li>
-                                </ul>
-                            </div>
-                            </div>
-                            
-                        </div><hr>
-                        <div>
-                                <div class="col-sm-9">
-                                    <a href="{% url 'book:question' question.book.isbn13 question.id %}">
-                                        <span>{{ question.page }}</span>
-                                        <span>{{ question.question }}</span>
-                                    </a>
+                            <div>
+                                <div class="col-sm-12" style="margin: 15px 0 30px 0;">
+                                    <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
+                                    <span class="question-text">{{ question.question }}</span>
+                                    <div class="answer-stat">
+                                        {{ question.like }}
+                                        also have this question
+                                    </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <ul class="list-inline">
-                                        <li><div>
-                                                {{ question.num_answer }}
-                                            </div>
-                                            <div>
-                                                replies
-                                            </div>
-                                        </li>
-                                        <li><div>
-                                            {{ question.like }}
-                                        </div>
-                                        <div>
-                                            have this question
-                                        </div>
-                                        </li>
-                                    </ul>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="answer-replies">
+                                    {{ question.num_answer }} replies
                                 </div>
-                                <br><hr>
+                                <div>
+                                    <div class="answer-user">
+                                        {{ user.get_username }}
+                                    </div>
+                                    <form class="form-horizontal" action="{% url 'book:question' question.book.isbn13 question.id %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="4" id="answer" name="answer" placeholder="Type your answer here..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
