@@ -65,6 +65,31 @@ input {
     font-family: 'Satisfy', cursive;
 }
 
+@media only screen and (min-width: 768px) {
+    #book-search-forum {
+        width: 68%;
+        padding-left: 10%;
+    }
+}
+
+#book-search-forum div {
+    width: 100%;
+}
+
+#book-search-forum input {
+    display: inline-block;
+    width: 92%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #777;
+}
+
+#book-search-forum button {
+    width: 5%;
+    background-color: transparent;
+    border: none;
+}
+
 /* book.html */
 
 .height-20 {

@@ -18,13 +18,19 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-sm-12 margin-bottom">
-                        <div>
+                        <div class="line-break">
                             <div class="col-sm-12" style="margin: 15px 0 30px 0;">
-                                <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
-                                <span class="question-text">{{ question.question }}</span>
-                                <div class="answer-stat">
-                                    {{ question.like }}
-                                    also have this question
+                                <div class="answer-answer margin-bottom">
+                                    <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
+                                    <span class="question-text">{{ question.question }}</span>
+                                </div>
+                                <div class="answer-stat margin-bottom">
+                                    <span>{{ question.like }} also have this question</span>
+                                    <span class="dot">comment</span>
+                                </div>
+                                <div class="answer-answer-button">
+                                    <button style="margin-right: 15px;"><img src="/static/book/images/icons8-thumbs-up-32.png" alt=""> Like</button>
+                                    <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
                                 </div>
                             </div>
                             <div class="col-xs-12">
