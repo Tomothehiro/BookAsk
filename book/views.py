@@ -63,8 +63,8 @@ class QuestionView(generic.DetailView):
         question = self.get_object(id)
         return render(request, self.template_name, {'question': question})
 
-    def post(self, request, pk):
-        question = self.get_object(pk)
+    def post(self, request, pk, id):
+        question = self.get_object(id)
         new_answer = Answer()
         # change with user id
         new_answer.author = request.user

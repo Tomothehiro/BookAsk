@@ -20,6 +20,7 @@
                 <div class="panel-body">
                     <div class="col-sm-12 margin-bottom">
                         <form class="form-horizontal" id="searchQ-form" action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <h4>Search Questions</h4>
                             <div class="form-row">
                                 <div class="col-sm-9">
@@ -54,21 +55,20 @@
                         <div>
                             <h4 class="inline-block height-20">Sort questions by:</h4>
                             <div class="inline-block">
-                            <div class="btn-group">
-                                <button type="button" class="dropdown-toggle btn-dropdown" data-toggle="dropdown">
-                                    Most Active <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Newest</a></li>
-                                    <li><a href="#">Most Active</a></li>
-                                </ul>
+                                <div class="btn-group">
+                                    <button type="button" class="dropdown-toggle btn-dropdown" data-toggle="dropdown">
+                                        Most Active <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Newest</a></li>
+                                        <li><a href="#">Most Active</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            </div>
-                            
                         </div><hr>
                         <div>
                             {% for question in book.question_set.all %}
-                            <div>
+                            <div class="line-break">
                                 <div class="col-sm-9">
                                     <a href="{% url 'book:question' book.isbn13 question.id %}">
                                         <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>

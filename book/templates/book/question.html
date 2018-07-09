@@ -19,14 +19,12 @@
                 <div class="panel-body">
                     <div class="col-sm-12 margin-bottom">
                         <div>
-                            <div>
-                                <div class="col-sm-12" style="margin: 15px 0 30px 0;">
-                                    <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
-                                    <span class="question-text">{{ question.question }}</span>
-                                    <div class="answer-stat">
-                                        {{ question.like }}
-                                        also have this question
-                                    </div>
+                            <div class="col-sm-12" style="margin: 15px 0 30px 0;">
+                                <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
+                                <span class="question-text">{{ question.question }}</span>
+                                <div class="answer-stat">
+                                    {{ question.like }}
+                                    also have this question
                                 </div>
                             </div>
                             <div class="col-xs-12">
@@ -37,15 +35,36 @@
                                     <div class="answer-user">
                                         {{ user.get_username }}
                                     </div>
-                                    <form class="form-horizontal" action="{% url 'book:question' question.book.isbn13 question.id %}" method="post" enctype="multipart/form-data">
+                                    <form class="form-horizontal" action="{% url 'book:question' question.book.isbn13 question.id %}" method="post" >
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <textarea class="form-control" rows="4" id="answer" name="answer" placeholder="Type your answer here..."></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        <div class="form-group clear-both">
+                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
                                         </div>
                                     </form>
+                                </div>
+                                <hr>
+                                <!-- ============ List of answers ============== -->
+                                <div>
+                                    {% for answer in question.answer_set.all %}
+                                        <div class="answer-user">
+                                            {{ answer.author }}
+                                        </div>
+                                        <div class="answer-answer margin-bottom">
+                                            {{ answer.answer }}
+                                        </div>
+                                        <div class="answer-answer-statistic margin-bottom">
+                                            <span>{{ answer.like }} found this useful</span>
+                                            <span class="dot">comment</span>
+                                        </div>
+                                        <div class="answer-answer-button">
+                                            <button style="margin-right: 15px;"><img src="/static/book/images/icons8-thumbs-up-32.png" alt="">Helpful</button>
+                                            <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
+                                        </div>
+                                        <hr>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

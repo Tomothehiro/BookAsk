@@ -15,6 +15,10 @@ a:hover {
     text-decoration: none;
 }
 
+hr {
+    border-top: 1px solid #D0D3D6;
+}
+
 /* bootstrap override */
 
 .btn {
@@ -37,6 +41,18 @@ input {
 
 .margin-v5 {
     margin: 5px 0;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.line-break {
+    word-wrap: break-word;
 }
 
 /* base.html */
@@ -120,4 +136,39 @@ input {
     font-size: 17px;
     font-size: 1.7rem;
     margin: 15px 0 15px 0;
+}
+
+.answer-answer {
+    color: rgba(0,0,0,0.7);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.3333334;
+}
+
+.answer-answer-statistic {
+    color: rgba(0,0,0,0.55);
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.answer-answer-button button {
+    font-size: 1.4rem;
+    color: rgba(0,0,0,0.7);
+    line-height: 1.3333334;
+    border: 0;
+    border-radius: 2px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.answer-answer-button img {
+    width: 18px;
+    height: 18px;
+    margin: 4px 4px;
+}
+
+.dot:before {
+    content: "\00b7";
+    padding: 0 5px;
 }
