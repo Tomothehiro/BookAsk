@@ -15,4 +15,7 @@ urlpatterns = [
 
     # /book/1234567890123/q/1/
     url(r'^(?P<pk>[0-9a-zA-Z]+)/q/(?P<id>[0-9a-zA-Z]+)/$', views.QuestionView.as_view(), name='question'),
+
+    # /book/1234567890123/q/1/like
+    url(r'^(?P<pk>[0-9a-zA-Z]+)/q/(?P<id>[0-9a-zA-Z]+)/like/$', views.QuestionLikeView.as_view(), name='question-like'),
 ]

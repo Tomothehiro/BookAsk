@@ -29,7 +29,7 @@
                                     <span class="dot">comment</span>
                                 </div>
                                 <div class="answer-answer-button">
-                                    <button style="margin-right: 15px;"><img src="/static/book/images/icons8-thumbs-up-32.png" alt=""> Like</button>
+                                    <button id="comment-like-button" style="margin-right: 15px;"><img src="/static/book/images/icons8-thumbs-up-32.png" alt=""> Like</button>
                                     <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
                                 </div>
                             </div>
@@ -87,4 +87,14 @@
     {% endif %}
     </div>
 </div>
+
+<script>
+    $('#comment-like-button').click(function() {
+        $.ajax({
+            url: "{% url 'book:question-like' question.book.isbn13 question.id %}",
+             success: function(result) {
+                alert(result);
+        }});
+    });
+</script>
 {% endblock %}

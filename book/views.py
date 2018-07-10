@@ -5,8 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic import View
-from django.http import Http404
-from .models import Book, Question, Answer, Comment
+from django.http import Http404, HttpResponse
+from .models import Book, Question, Answer, Comment, QuestionLike
 from .forms import UserForm
 from django.contrib import messages
 import json
@@ -53,9 +53,9 @@ class QuestionView(generic.DetailView):
     model = Question
     template_name = 'book/question.html'
 
-    def get_object(self, pk):
+    def get_object(self, id):
         try:
-            return Question.objects.get(pk=pk)
+            return Question.objects.get(pk=id)
         except Question.DoesNotExist:
             raise Http404
 
@@ -77,6 +77,41 @@ class QuestionView(generic.DetailView):
             return render(request, self.template_name, {'question': question, 'error_message': "Failed to save answer"})
         else:
             return render(request, self.template_name, {'question': question})
+
+class QuestionLikeView(generic.DetailView):
+    model = QuestionLike
+    question = None
+
+    def get_object(self, id, user):
+        try:
+            self.question = Question.objects.get(pk=id)
+            questionLike = QuestionLike.objects.get(question=self.question, user=user)
+            return questionLike
+        except QuestionLike.DoesNotExist:
+            return None
+
+    def save_object(self, id, user):
+        new_questionLike = QuestionLike()
+        new_questionLike.question = self.question
+        new_questionLike.user = user
+        try:
+            new_questionLike.save()
+        except (KeyError, QuestionLike.DoesNotExist):
+            return None
+        else:
+            return new_questionLike
+
+    def get(self, request, pk, id):
+        questionLike = self.get_object(id, request.user)
+        if questionLike is None:
+            response = self.save_object(id, request.user)
+            if response is None:
+                return HttpResponse("Fail")
+            else:
+                return HttpResponse("Success")
+        else:
+            return HttpResponse("Fail")
+
 
 class UserFormView(View):
     form_class = UserForm

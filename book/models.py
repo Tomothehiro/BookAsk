@@ -59,12 +59,12 @@ class Comment(models.Model):
     def __unicode__(self):
         return self.comment
 
-class Like(models.Model):
+class QuestionLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return self.book
+        return self.user.username + " - " +self.question.question
 
 class Watch(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
