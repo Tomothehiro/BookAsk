@@ -40,7 +40,6 @@ class BookView(generic.DetailView):
         new_question.author = request.user
         new_question.question = request.POST.get('question').encode('utf-8')
         new_question.page = int(request.POST.get('page'))
-        new_question.like = 0
         new_question.book = book
         try:
             new_question.save()
@@ -53,20 +52,27 @@ class QuestionView(generic.DetailView):
     model = Question
     template_name = 'book/question.html'
 
-    def get_object(self, id):
+    def get_question_object(self, id):
         try:
             return Question.objects.get(pk=id)
         except Question.DoesNotExist:
             raise Http404
 
+    def get_questionLike_object(self, question, user):
+        try:
+            questionLike = QuestionLike.objects.get(question=question, user=user)
+            return questionLike
+        except QuestionLike.DoesNotExist:
+            return None
+
     def get(self, request, pk, id):
-        question = self.get_object(id)
-        return render(request, self.template_name, {'question': question})
+        question = self.get_question_object(id)
+        questionLike = self.get_questionLike_object(question, request.user)
+        return render(request, self.template_name, {'question': question, 'questionLike': questionLike})
 
     def post(self, request, pk, id):
-        question = self.get_object(id)
+        question = self.get_question_object(id)
         new_answer = Answer()
-        # change with user id
         new_answer.author = request.user
         new_answer.answer = request.POST.get('answer').encode('utf-8')
         new_answer.like = 0
@@ -78,6 +84,7 @@ class QuestionView(generic.DetailView):
         else:
             return render(request, self.template_name, {'question': question})
 
+# Like Class for Questions
 class QuestionLikeView(generic.DetailView):
     model = QuestionLike
     question = None
@@ -106,11 +113,22 @@ class QuestionLikeView(generic.DetailView):
         if questionLike is None:
             response = self.save_object(id, request.user)
             if response is None:
-                return HttpResponse("Fail")
+                return HttpResponse(0) #Return Fail to add Like
             else:
-                return HttpResponse("Success")
+                return HttpResponse(1) #Return Success
         else:
-            return HttpResponse("Fail")
+            return HttpResponse(0) #Return Fail to add Like
+
+    def delete(self, request, pk, id):
+        questionLike = self.get_object(id, request.user)
+        if questionLike is not None:
+            response = questionLike.delete()
+            if response == 1:
+                return HttpResponse(1) #Return Success
+            else:
+                return HttpResponse(0) #Return Fail to Unlike
+        else:
+            return HttpResponse(0) #Return Fail to Unlike, no Like found
 
 
 class UserFormView(View):

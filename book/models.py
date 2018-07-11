@@ -27,7 +27,6 @@ class Question(models.Model):
     question = models.CharField(max_length=4000)
     #date = models.
     page = models.PositiveIntegerField()
-    like = models.PositiveIntegerField()
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
@@ -36,10 +35,13 @@ class Question(models.Model):
     def __unicode__(self):
         return self.question
 
-    # allows question.num_answer without ()
     @property
     def num_answer(self):
         return self.answer_set.count()
+
+    @property
+    def like(self):
+        return self.questionlike_set.count()
 
 
 class Answer(models.Model):

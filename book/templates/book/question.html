@@ -29,8 +29,17 @@
                                     <span class="dot">comment</span>
                                 </div>
                                 <div class="answer-answer-button">
-                                    <button id="comment-like-button" style="margin-right: 15px;"><img src="/static/book/images/icons8-thumbs-up-32.png" alt=""> Like</button>
+                                    <button id="comment-like-button"><img src="/static/book/images/icons8-thumbs-up-32.png" alt="like-button">
+                                        <span> Like</span></button>
+                                    <button id="comment-unlike-button" class="hidden"><img src="/static/book/images/icons8-thumbs-up-32-color.png" alt="unlike-button">
+                                        <span style="color:#1abc9c;"> Like</span></button>
                                     <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
+                                    {% if questionLike %}
+                                        <script>
+                                            $('#comment-like-button').addClass("hidden");
+                                            $('#comment-unlike-button').removeClass("hidden");
+                                        </script>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-xs-12">
@@ -89,11 +98,61 @@
 </div>
 
 <script>
+    // get Cookie using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    // set csrf token header if HTTP methods are not one of the above
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    // send GET request to ex. /book/1234567890123/q/1/like to add like to the question
     $('#comment-like-button').click(function() {
         $.ajax({
             url: "{% url 'book:question-like' question.book.isbn13 question.id %}",
-             success: function(result) {
-                alert(result);
+            success: function(result) {
+                if (result == 1) {
+                    $('#comment-like-button').addClass("hidden");
+                    $('#comment-unlike-button').removeClass("hidden");
+                }
+        }});
+    });
+
+    // send DELETE request to ex. /book/1234567890123/q/1/like to unlike the question
+    $('#comment-unlike-button').click(function() {
+        $.ajax({
+            url: "{% url 'book:question-like' question.book.isbn13 question.id %}",
+            type: 'delete',
+            success: function(result) {
+                if (result == 1) {
+                    $('#comment-like-button').removeClass("hidden");
+                    $('#comment-unlike-button').addClass("hidden");
+                }
         }});
     });
 </script>

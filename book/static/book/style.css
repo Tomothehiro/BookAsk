@@ -185,6 +185,7 @@ input {
     background-color: transparent;
     -webkit-box-shadow: none;
     box-shadow: none;
+    margin-right: 15px;
 }
 
 .answer-answer-button img {
