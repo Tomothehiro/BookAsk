@@ -25,19 +25,19 @@
                                     <span class="question-text">{{ question.question }}</span>
                                 </div>
                                 <div class="answer-stat margin-bottom">
-                                    <span>{{ question.like }} also have this question</span>
+                                    <span><span id="question-like-count">{{ question.like }}</span> also have this question</span>
                                     <span class="dot">comment</span>
                                 </div>
                                 <div class="answer-answer-button">
-                                    <button id="comment-like-button"><img src="/static/book/images/icons8-thumbs-up-32.png" alt="like-button">
+                                    <button id="question-like-button"><img src="/static/book/images/icons8-thumbs-up-32.png" alt="like-button">
                                         <span> Like</span></button>
-                                    <button id="comment-unlike-button" class="hidden"><img src="/static/book/images/icons8-thumbs-up-32-color.png" alt="unlike-button">
+                                    <button id="question-unlike-button" class="hidden"><img src="/static/book/images/icons8-thumbs-up-32-color.png" alt="unlike-button">
                                         <span style="color:#1abc9c;"> Like</span></button>
                                     <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
                                     {% if questionLike %}
                                         <script>
-                                            $('#comment-like-button').addClass("hidden");
-                                            $('#comment-unlike-button').removeClass("hidden");
+                                            $('#question-like-button').addClass("hidden");
+                                            $('#question-unlike-button').removeClass("hidden");
                                         </script>
                                     {% endif %}
                                 </div>
@@ -132,26 +132,30 @@
     });
 
     // send GET request to ex. /book/1234567890123/q/1/like to add like to the question
-    $('#comment-like-button').click(function() {
+    $('#question-like-button').click(function() {
         $.ajax({
             url: "{% url 'book:question-like' question.book.isbn13 question.id %}",
             success: function(result) {
                 if (result == 1) {
-                    $('#comment-like-button').addClass("hidden");
-                    $('#comment-unlike-button').removeClass("hidden");
+                    $('#question-like-button').addClass("hidden");
+                    $('#question-unlike-button').removeClass("hidden");
+                    let likeCount = parseInt($('#question-like-count').html()) + 1;
+                    $('#question-like-count').html(likeCount);
                 }
         }});
     });
 
     // send DELETE request to ex. /book/1234567890123/q/1/like to unlike the question
-    $('#comment-unlike-button').click(function() {
+    $('#question-unlike-button').click(function() {
         $.ajax({
             url: "{% url 'book:question-like' question.book.isbn13 question.id %}",
             type: 'delete',
             success: function(result) {
                 if (result == 1) {
-                    $('#comment-like-button').removeClass("hidden");
-                    $('#comment-unlike-button').addClass("hidden");
+                    $('#question-like-button').removeClass("hidden");
+                    $('#question-unlike-button').addClass("hidden");
+                    let likeCount = parseInt($('#question-like-count').html()) - 1;
+                    $('#question-like-count').html(likeCount);
                 }
         }});
     });

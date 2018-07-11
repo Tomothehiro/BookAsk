@@ -111,8 +111,8 @@ class QuestionLikeView(generic.DetailView):
     def get(self, request, pk, id):
         questionLike = self.get_object(id, request.user)
         if questionLike is None:
-            response = self.save_object(id, request.user)
-            if response is None:
+            result = self.save_object(id, request.user)
+            if result is None:
                 return HttpResponse(0) #Return Fail to add Like
             else:
                 return HttpResponse(1) #Return Success
@@ -122,8 +122,8 @@ class QuestionLikeView(generic.DetailView):
     def delete(self, request, pk, id):
         questionLike = self.get_object(id, request.user)
         if questionLike is not None:
-            response = questionLike.delete()
-            if response == 1:
+            result = questionLike.delete() # successful delete will return (1, {u'book.QuestionLike': 1})
+            if result[0] == 1:
                 return HttpResponse(1) #Return Success
             else:
                 return HttpResponse(0) #Return Fail to Unlike
