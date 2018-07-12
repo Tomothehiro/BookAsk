@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BookQ{% endblock %}</title>
+
+    <!-- Loads the path to your static files-->
+    {% load staticfiles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'book/style.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <style>
+        @media only screen and (min-width: 768px) {
+            .navbar {
+                min-height: 250px;
+            }
+
+            .navbar-right {
+                margin-right: -25px !important;
+            }
+
+            .navbar-header {
+                margin-left: 5% !important;
+                float: none;
+                display: inline;
+                position: absolute;
+                top: 3%;
+                left: 5%;
+            }
+
+            .navbar-brand {
+                padding: 37px 15px !important;
+                font-size: 40px !important;
+            }
+
+            #book-search-forum {
+                width: 80% !important;
+                padding-left: 26%;
+                padding-top: 100px !important;
+            }
+
+            .greeting-div {
+                margin-bottom: 35px;
+            }
+
+            .greeting-text {
+                color: #fff;
+                font-weight: 200;
+                font-size: 26px;
+                font-size: 2.2rem;
+                line-height: 1.07692308;
+                display: inline-block;
+                padding: 5px 0 3px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+
+            <!-- Header -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'book:index' %}">BookQ</a>
+            </div>
+
+            <!-- Items -->
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="#">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="greeting-div">
+                            {% if user.is_authenticated %}
+                            <span class="greeting-text">Hi {{ user.get_username }}, </span>
+                            {% else %}
+                            <span class="greeting-text">Hello, </span>
+                            {% endif %}
+                            <span class="greeting-text">Search for your favorite textbook here</span>
+                        </div>
+                        <input type="text" class="form-control" name="q" value="">
+                        <button type="submit" class="btn btn-default"><img src="/static/book/images/icons8-search-50.png" alt="" width="20px" height="20px"></button>
+                    </div>
+                </form>
+
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    {% if user.is_authenticated %}
+                        <li class="">
+                            <a href="{% url 'logout' %}?next={{request.path}}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Loggout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="">
+                            <a href="{% url 'login' %}?next={{request.path}}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Login
+                            </a>
+                        </li>
+                    {% endif %} 
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

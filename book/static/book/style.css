@@ -15,6 +15,11 @@ a:hover {
     text-decoration: none;
 }
 
+input:focus {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
 hr {
     border-top: 1px solid #D0D3D6;
 }
@@ -63,6 +68,7 @@ input {
 
 .navbar-brand{
     font-family: 'Satisfy', cursive;
+    font-size: 32px !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -82,6 +88,7 @@ input {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #777;
+    font-size: 20px;
 }
 
 #book-search-forum button {
