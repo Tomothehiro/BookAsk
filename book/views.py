@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic import View
 from django.http import Http404, HttpResponse
-from .models import Book, Question, Answer, Comment, QuestionLike
+from .models import Category, Book, Question, Answer, Comment, QuestionLike
 from .forms import UserForm
 from django.contrib import messages
 import json
@@ -14,10 +14,17 @@ from collections import namedtuple
 
 class IndexView(generic.ListView):
     template_name = 'book/index.html'
-    context_object_name = 'all_books'
 
-    def get_queryset(self):
-        return Book.objects.all()
+    def get_category_object(self):
+        try:
+            return Category.objects.all()
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        books = Book.objects.all()
+        categories = self.get_category_object()
+        return render(request, self.template_name, {'books': books, 'categories': categories})
 
 class BookView(generic.DetailView):
     model = Book
@@ -67,7 +74,10 @@ class QuestionView(generic.DetailView):
 
     def get(self, request, pk, id):
         question = self.get_question_object(id)
-        questionLike = self.get_questionLike_object(question, request.user)
+        if request.user.is_authenticated():
+           questionLike = self.get_questionLike_object(question, request.user)
+        else:
+            questionLike = None
         return render(request, self.template_name, {'question': question, 'questionLike': questionLike})
 
     def post(self, request, pk, id):
@@ -98,6 +108,7 @@ class QuestionLikeView(generic.DetailView):
             return None
 
     def save_object(self, id, user):
+        
         new_questionLike = QuestionLike()
         new_questionLike.question = self.question
         new_questionLike.user = user
@@ -109,6 +120,8 @@ class QuestionLikeView(generic.DetailView):
             return new_questionLike
 
     def get(self, request, pk, id):
+        if not request.user.is_authenticated():
+            return HttpResponse(0)
         questionLike = self.get_object(id, request.user)
         if questionLike is None:
             result = self.save_object(id, request.user)
@@ -120,6 +133,8 @@ class QuestionLikeView(generic.DetailView):
             return HttpResponse(0) #Return Fail to add Like
 
     def delete(self, request, pk, id):
+        if not request.user.is_authenticated():
+            return HttpResponse(0)
         questionLike = self.get_object(id, request.user)
         if questionLike is not None:
             result = questionLike.delete() # successful delete will return (1, {u'book.QuestionLike': 1})

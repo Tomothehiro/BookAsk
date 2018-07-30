@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+
 body{
     margin: 0;
     padding: 0;
-    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
     color: rgba(0,0,0,0.7);
     background-color: rgb(240, 243, 246);
@@ -97,6 +99,35 @@ input {
     border: none;
 }
 
+/* index.html */
+.category-nav {
+    line-height: 18px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.category-nav li {
+    margin: 10px 0;
+    vertical-align: top;
+}
+
+.category-nav>li>div{
+    clear: both;
+}
+
+.category-nav img{
+    width: 20px;
+    margin-right: 10px; 
+}
+
+.category-nav a, .category-nav div {
+    display: inline-block !important;
+}
+
+.nav-link div {
+    float: left;
+}
+
 /* book.html */
 
 .height-20 {
@@ -125,7 +156,7 @@ input {
 
 .question-stat {
     color: rgba(0,0,0,0.55);
-    font-weight: 300;
+    font-weight: 200;
     font-size: 3.2rem;
     line-height: 1.33;
     margin-bottom: -8px;

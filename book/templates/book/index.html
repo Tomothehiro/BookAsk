@@ -5,32 +5,50 @@
 <div class="container-fluid">
         <!-- Albums -->
         <div class="row">
-            {% if all_books %}
-                {% for book in all_books %}
-                    <div class="col-sm-4 col-lg-2">
-                        <div class="thumbnail">
-                            <a href="{% url 'book:book' book.isbn13 %}">
-                                <img src="{{ book.cover.url }}" class="img-responsive">
-                            </a>
-                            <div class="caption">
-                                <h2>{{ book.title }}</h2>
-                                <h4>{{ book.author }}</h4>
-    
-                                <!-- View Details -->
-                                <a href="{% url 'book:book' book.isbn13 %}" class="btn btn-primary btn-sm" role="button">View Details</a>
-    
-                                <!-- Favorite Album -->
-                                <a href="#" class="btn btn-default btn-sm btn-favorite">
-                                        <span class="glyphicon glyphicon-star"></span>
-                                    <!-- <span class="glyphicon glyphicon-star {% if book.is_favorite %}active{% endif %}"></span> -->
+            <div class="col-xs-12 col-sm-2">
+                    <ul class="nav flex-column category-nav">
+                        {% if categories %}
+                            {% for category in categories %}
+                            <li class="nav-item">
+                                <div style="width: 100%">
+                                    <a class="nav-link active" href="#" style="width: 100%">
+                                        <div style="width: 20px; margin-right: 10px;"><img src="{{ category.icon }}" alt=""></div>
+                                        <div style="width: 75%; padding-top: 2px;"><span>{{ category.name }}</span></div>
+                                    </a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+            </div>
+            <div class="col-xs-12 col-sm-10">
+                {% if books %}
+                    {% for book in books %}
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="thumbnail">
+                                <a href="{% url 'book:book' book.isbn13 %}">
+                                    <img src="{{ book.cover.url }}" class="img-responsive">
                                 </a>
-    
+                                <div class="caption">
+                                    <h2>{{ book.title }}</h2>
+                                    <h4>{{ book.author }}</h4>
+        
+                                    <!-- View Details -->
+                                    <a href="{% url 'book:book' book.isbn13 %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+        
+                                    <!-- Favorite Album -->
+                                    <a href="#" class="btn btn-default btn-sm btn-favorite">
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        <!-- <span class="glyphicon glyphicon-star {% if book.is_favorite %}active{% endif %}"></span> -->
+                                    </a>
+        
+                                </div>
                             </div>
                         </div>
-                    </div>
-    
-                {% endfor %}
-            {% endif %}
+        
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
 </div>
 {% endblock %}

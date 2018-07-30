@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=250)
+    icon = models.FileField()
 
     def __unicode__(self):
         return self.name

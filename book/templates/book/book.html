@@ -12,7 +12,10 @@
                 <span>
                     - {{ book.author }}
                 </span><br><br>
+                <!-- ============ New Question Button (if logged in) ============== -->
+                {% if user.is_authenticated %}
                 <button id="newQ" class="btn btn-primary">New Question</button>
+                {% endif %}
             </div>
         </div>
         <div class="col-xs-12 col-sm-10">
@@ -30,9 +33,10 @@
                                     <button id="newQ" class="btn btn-primary">Search</button>
                                 </div>
                             </div>
-                            
                         </form>
                     </div>
+                    <!-- ============ New Question box (if logged in) ============== -->
+                    {% if user.is_authenticated %}
                     <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1 margin-bottom">
                         <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' book.isbn13 %}" method="post" enctype="multipart/form-data">
                             <hr>
@@ -51,6 +55,7 @@
                             <hr>
                         </form>
                     </div>
+                    {% endif %}
                     <div class="col-sm-12 col-md-12 margin-bottom">
                         <div>
                             <h4 class="inline-block height-20">Sort questions by:</h4>
