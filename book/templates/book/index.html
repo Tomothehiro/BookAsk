@@ -23,14 +23,15 @@
             </div>
             <div class="col-xs-12 col-sm-10">
                 {% if books %}
+                <div class="row">
                     {% for book in books %}
-                        <div class="col-sm-4 col-lg-2">
+                        <div class="col-sm-4 col-lg-2" style="vertical-align: top;">
                             <div class="thumbnail">
                                 <a href="{% url 'book:book' book.isbn13 %}">
                                     <img src="{{ book.cover.url }}" class="img-responsive">
                                 </a>
                                 <div class="caption">
-                                    <h2>{{ book.title }}</h2>
+                                    <h3 style="max-height: 80px; min-height:80px; overflow: hidden;">{{ book.title }}</h3>
                                     <h4>{{ book.author }}</h4>
         
                                     <!-- View Details -->
@@ -45,8 +46,8 @@
                                 </div>
                             </div>
                         </div>
-        
                     {% endfor %}
+                </div>
                 {% endif %}
             </div>
         </div>
