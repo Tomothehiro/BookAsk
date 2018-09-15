@@ -31,7 +31,7 @@
             <!-- Items -->
             <div class="collapse navbar-collapse" id="topNavBar">
 
-                <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="#">
+                <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="{% url 'book:index' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" class="form-control" name="q" value="">

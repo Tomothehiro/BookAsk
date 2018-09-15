@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.views import generic
 from django.views.generic import View
 from django.http import Http404, HttpResponse
@@ -22,7 +23,14 @@ class IndexView(generic.ListView):
             raise Http404
 
     def get(self, request):
-        books = Book.objects.all()
+        query = request.GET.get('q', '')
+        category = request.GET.get('c', '')
+        if category:
+            books = Book.objects.filter(category_id=category)
+        elif query:
+            books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+        else:
+            books = Book.objects.all()
         categories = self.get_category_object()
         return render(request, self.template_name, {'books': books, 'categories': categories})
 

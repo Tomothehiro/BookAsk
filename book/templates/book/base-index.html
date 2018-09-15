@@ -76,8 +76,7 @@
 
             <!-- Items -->
             <div class="collapse navbar-collapse" id="topNavBar">
-                <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="#">
-                    {% csrf_token %}
+                <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="{% url 'book:index' %}">
                     <div class="form-group">
                         <div class="greeting-div">
                             {% if user.is_authenticated %}
