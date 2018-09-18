@@ -62,7 +62,7 @@ input {
     word-wrap: break-word;
 }
 
-/* base.html */
+/* base.html (navbar) */
 
 .navbar{
     border-radius: 0;
@@ -99,7 +99,7 @@ input {
     border: none;
 }
 
-/* index.html */
+/* index.html (Top Page) */
 .category-nav {
     line-height: 18px;
     font-size: 18px;
@@ -128,7 +128,7 @@ input {
     float: left;
 }
 
-/* book.html */
+/* book.html (Single Book Page w/Questions) */
 
 .height-20 {
     line-height: 22px;
@@ -148,6 +148,11 @@ input {
     display: block;
     margin: 7px 0;
     font-size: 1.5rem;
+}
+
+.question-summary {
+    max-height: 88px;
+    overflow: hidden;
 }
 
 .question-stat-list {
@@ -174,7 +179,7 @@ input {
     width: 80px;
 }
 
-/* question.html */
+/* question.html (Single Question Page w/Answers) */
 .answer-replies:before {
     display: block;
     content: "";
