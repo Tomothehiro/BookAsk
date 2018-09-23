@@ -32,9 +32,8 @@
             <div class="collapse navbar-collapse" id="topNavBar">
 
                 <form id="book-search-forum" class="navbar-form navbar-left" role="search" method="get" action="{% url 'book:index' %}">
-                    {% csrf_token %}
                     <div class="form-group">
-                        <input type="text" class="form-control" name="q" value="">
+                        <input type="text" class="form-control" name="q" value="{{ query }}">
                         <button type="submit" class="btn btn-default"><img src="/static/book/images/icons8-search-50.png" alt="" width="20px" height="20px"></button>
                     </div>
                 </form>

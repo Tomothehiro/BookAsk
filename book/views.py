@@ -24,15 +24,15 @@ class IndexView(generic.ListView):
 
     def get(self, request):
         query = request.GET.get('q', '')
-        category = request.GET.get('c', '')
-        if category:
-            books = Book.objects.filter(category_id=category)
+        cid = request.GET.get('c', '')
+        if cid:
+            books = Book.objects.filter(category_id=cid)
         elif query:
             books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
         else:
             books = Book.objects.all()
         categories = self.get_category_object()
-        return render(request, self.template_name, {'books': books, 'categories': categories})
+        return render(request, self.template_name, {'books': books, 'categories': categories, 'query':query, 'cid': cid})
 
 class BookView(generic.DetailView):
     model = Book

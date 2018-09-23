@@ -23,7 +23,7 @@
                                 <!-- ============ Selected Question ============== -->
                                 <div class="answer-answer margin-bottom">
                                     <span>page </span><h3 class="no-margin inline-block" style="font-weight: 300;">{{ question.page }}</h3>
-                                    <span class="question-text">{{ question.question }}</span>
+                                    <span class="question-text">{{ question.question|linebreaksbr }}</span>
                                 </div>
                                 <div class="answer-stat margin-bottom">
                                     <span><span id="question-like-count">{{ question.like }}</span> also have this question</span>
@@ -72,7 +72,7 @@
                                             {{ answer.author }}
                                         </div>
                                         <div class="answer-answer margin-bottom">
-                                            {{ answer.answer }}
+                                            {{ answer.answer|linebreaksbr }}
                                         </div>
                                         <div class="answer-answer-statistic margin-bottom">
                                             <span>{{ answer.like }} found this useful</span>

@@ -101,10 +101,13 @@
                             </div>
                             <div class="col-xs-12"><hr></div>
                             {% endfor %}
+                            {% if book.question_set|length == 0 %}
+                                <h4>Question not found</h4>
+                            {% endif %}
                         </div>
                     </div>
-                    <div style="display:block; margin-left:2%;" id="amzn-assoc-ad-ecbea48f-cdaa-4f3b-bde9-872009d90648"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=ecbea48f-cdaa-4f3b-bde9-872009d90648"></script>
                 </div>
+                <div style="display:block; margin-left:2%;" id="amzn-assoc-ad-ecbea48f-cdaa-4f3b-bde9-872009d90648"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=ecbea48f-cdaa-4f3b-bde9-872009d90648"></script>
             </div>
         </div>
     {% else %}
