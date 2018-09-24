@@ -54,10 +54,18 @@ class Answer(models.Model):
     def __unicode__(self):
         return self.answer
 
-class Comment(models.Model):
+class AnswerComment(models.Model):
     author = models.CharField(max_length=250)
     comment = models.CharField(max_length=4000)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.comment
+
+class QuestionComment(models.Model):
+    author = models.CharField(max_length=250)
+    comment = models.CharField(max_length=4000)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.comment

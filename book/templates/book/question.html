@@ -6,12 +6,16 @@
     <div class="row">
     {% if question %}
         <div class="col-xs-12 col-sm-2">
-            <img src="{{ question.book.cover.url }}" alt="{{ question.book.title }}" class="img-thumbnail rounded" height="200" width="150">
+            <a href="{% url 'book:book' question.book.isbn13 %}">
+                <img src="{{ question.book.cover.url }}" alt="{{ question.book.title }}" class="img-thumbnail rounded" height="200" width="150">
+            </a>
             <div class="inline-block">
-                <h4>{{ question.book.title }} </h4>
-                <span>
-                    - {{ question.book.author }}
-                </span><br><br>
+                <a href="{% url 'book:book' question.book.isbn13 %}">
+                    <h4>{{ question.book.title }} </h4>
+                    <span>
+                        - {{ question.book.author }}
+                    </span>
+                </a><br><br>
             </div>
         </div>
         <div class="col-xs-12 col-sm-10">
@@ -34,7 +38,8 @@
                                         <span> Like</span></button>
                                     <button id="question-unlike-button" class="hidden"><img src="/static/book/images/icons8-thumbs-up-32-color.png" alt="unlike-button">
                                         <span style="color:#1abc9c;"> Like</span></button>
-                                    <button><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
+                                    <button id="comment-btn"><img src="/static/book/images/icons8-chat-bubble-32.png" alt="">Comment</button>
+                                    <!-- if the question is already liked, toggle like button displayed -->
                                     {% if questionLike %}
                                         <script>
                                             $('#question-like-button').addClass("hidden");
@@ -42,7 +47,31 @@
                                         </script>
                                     {% endif %}
                                 </div>
+                                <!-- ============ Comments for question ============== -->
+                                <div id="question-comment-div" class="hide">
+                                    {% for comment in question.questioncomment_set.all %}
+                                        <div class="question-comment-user">
+                                            <b>{{ comment.author }}</b>
+                                        </div>
+                                        <div class="question-comment-comment no-margin">
+                                            {{ comment.comment|linebreaksbr }}
+                                        </div>
+                                        <hr>
+                                    {% endfor %}
+                                <!-- ============ Comment box shown w/click (if logged in) ============== -->
+                                {% if user.is_authenticated %}
+                                    <form style="overflow: auto;">
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="4" id="question-comment" name="question-comment" placeholder="Type your comment here..."></textarea>
+                                        </div>
+                                        <div class="form-group clear-both">
+                                            <button type="button" id="question-comment-button" class="btn btn-primary float-right">Comment</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                {% endif %}
                             </div>
+                            <!-- ============ Answers ============== -->
                             <div class="col-xs-12">
                                 <div class="answer-replies">
                                     {{ question.num_answer }} replies
@@ -59,7 +88,7 @@
                                             <textarea class="form-control" rows="4" id="answer" name="answer" placeholder="Type your answer here..."></textarea>
                                         </div>
                                         <div class="form-group clear-both">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                            <button type="submit" class="btn btn-primary float-right">Answer</button>
                                         </div>
                                     </form>
                                 </div>
@@ -161,6 +190,24 @@
                     let likeCount = parseInt($('#question-like-count').html()) - 1;
                     $('#question-like-count').html(likeCount);
                 }
+        }});
+    });
+
+    // show comment textarea if logged in
+    $(function() {
+        $('#comment-btn').click(function() {
+            $("#question-comment-div").toggleClass("hide");
+        });
+    });
+
+    // send GET request to ex. /book/1234567890123/q/1/like to add like to the question
+    $('#question-comment-button').click(function() {
+        let comment = $('#question-comment').val();
+        $.post({
+            url: "{% url 'book:question-comment' question.book.isbn13 question.id 0 %}",
+            data: {"comment": comment},
+            success: function(result) {
+                
         }});
     });
 </script>

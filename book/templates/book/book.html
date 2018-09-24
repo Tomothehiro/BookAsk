@@ -6,12 +6,16 @@
     <div class="row">
     {% if book %}
         <div class="col-xs-12 col-sm-2">
-            <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-thumbnail rounded" height="200" width="150">
+            <a href="{% url 'book:book' book.isbn13 %}">
+                <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-thumbnail rounded" height="200" width="150">
+            </a>
             <div class="inline-block">
-                <h4>{{ book.title }} </h4>
-                <span>
-                    - {{ book.author }}
-                </span><br><br>
+                <a href="{% url 'book:book' book.isbn13 %}">
+                    <h4>{{ book.title }} </h4>
+                    <span>
+                        - {{ book.author }}
+                    </span>
+                </a><br><br>
                 <!-- ============ New Question Button (if logged in) ============== -->
                 {% if user.is_authenticated %}
                 <button id="newQ" class="btn btn-primary">New Question</button>
@@ -40,6 +44,7 @@
                     <div class="col-sm-offset-1 col-sm-10 col-sm-offset-1 margin-bottom">
                         <form class="form-horizontal hide" id="newQ-form" action="{% url 'book:book' book.isbn13 %}" method="post" enctype="multipart/form-data">
                             <hr>
+                            <h4 style="margin-left: -15px;">New Question</h4>
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="page">Page</label>
@@ -101,7 +106,7 @@
                             </div>
                             <div class="col-xs-12"><hr></div>
                             {% endfor %}
-                            {% if book.question_set|length == 0 %}
+                            {% if book.question_set.all|length == 0 %}
                                 <h4>Question not found</h4>
                             {% endif %}
                         </div>
@@ -123,7 +128,7 @@
 <script>
     $(function() {
         $('#newQ').click(function() {
-            $("#newQ-form").removeClass("hide");
+            $("#newQ-form").toggleClass("hide");
         });
     });
 </script>

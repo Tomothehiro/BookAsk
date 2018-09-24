@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.views import generic
 from django.views.generic import View
 from django.http import Http404, HttpResponse
-from .models import Category, Book, Question, Answer, Comment, QuestionLike
+from .models import Category, Book, Question, Answer, AnswerComment, QuestionComment, QuestionLike
 from .forms import UserForm
 from django.contrib import messages
 import json
@@ -22,9 +22,11 @@ class IndexView(generic.ListView):
         except Category.DoesNotExist:
             raise Http404
 
+    # get: get all book
     def get(self, request):
         query = request.GET.get('q', '')
         cid = request.GET.get('c', '')
+        # TODO: retrieve only the first 20~30
         if cid:
             books = Book.objects.filter(category_id=cid)
         elif query:
@@ -44,10 +46,12 @@ class BookView(generic.DetailView):
         except Book.DoesNotExist:
             raise Http404
 
+    # get: get book with asked questions
     def get(self, request, pk):
         book = self.get_object(pk)
         return render(request, self.template_name, {'book': book})
 
+    # post: save new question for a book
     def post(self, request, pk):
         book = self.get_object(pk)
         new_question = Question()
@@ -73,6 +77,7 @@ class QuestionView(generic.DetailView):
         except Question.DoesNotExist:
             raise Http404
 
+    # get like count for a question
     def get_questionLike_object(self, question, user):
         try:
             questionLike = QuestionLike.objects.get(question=question, user=user)
@@ -80,6 +85,7 @@ class QuestionView(generic.DetailView):
         except QuestionLike.DoesNotExist:
             return None
 
+    # get: get a question with answers
     def get(self, request, pk, id):
         question = self.get_question_object(id)
         if request.user.is_authenticated():
@@ -88,6 +94,7 @@ class QuestionView(generic.DetailView):
             questionLike = None
         return render(request, self.template_name, {'question': question, 'questionLike': questionLike})
 
+    # post: save new answer to a question
     def post(self, request, pk, id):
         question = self.get_question_object(id)
         new_answer = Answer()
@@ -152,6 +159,44 @@ class QuestionLikeView(generic.DetailView):
                 return HttpResponse(0) #Return Fail to Unlike
         else:
             return HttpResponse(0) #Return Fail to Unlike, no Like found
+
+class QuestionCommentView(generic.DetailView):
+    model = QuestionComment
+    question = None
+
+    def get_question(self, id):
+        try:
+            return Question.objects.get(pk=id)
+        except QuestionComment.DoesNotExist:
+            # TODO: return exception
+            return None
+
+    def save_object(self, id, user):
+        try:
+            new_questionLike.save()
+        except (KeyError, QuestionLike.DoesNotExist):
+            return None
+        else:
+            return new_questionLike
+
+    def post(self, request, pk, id, comid):
+        # TODO: Update comment if comid > 0
+        if not request.user.is_authenticated():
+            return HttpResponse(0)
+        comment = QuestionComment()
+        comment.comment = request.POST.get('comment')
+        comment.author = request.user
+        comment.question = self.get_question(id)
+        try:
+            comment.save()
+            return HttpResponse(1)
+        except (KeyError, QuestionComment.DoesNotExist):
+            return HttpResponse(0)
+
+    def delete(self, request, pk, id, comid):
+        if not request.user.is_authenticated():
+            return HttpResponse(0)
+        # TODO: delete comment
 
 
 class UserFormView(View):

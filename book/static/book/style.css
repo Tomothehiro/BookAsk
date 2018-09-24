@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600');
 
 body{
     margin: 0;
@@ -20,6 +20,10 @@ a:hover {
 input:focus {
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
+}
+
+button:focus {
+    outline: none;
 }
 
 hr {
@@ -245,4 +249,25 @@ input {
 .dot:before {
     content: "\00b7";
     padding: 0 5px;
+}
+
+#question-comment-div {
+    width: 75%;
+    margin: auto;
+    border: 1px solid #D0D3D6;
+    padding: 2% 3%;
+}
+
+.question-comment-user {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.33;
+}
+
+.question-comment-comment {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 400;
+    font-size: 1.3rem;
+    line-height: 1.23;
 }
